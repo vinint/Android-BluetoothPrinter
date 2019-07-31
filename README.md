@@ -1,2 +1,2 @@
 # Android-BluetoothPrinter
-Android portable bluetooth printer drive
+Android bluetooth printer drive
