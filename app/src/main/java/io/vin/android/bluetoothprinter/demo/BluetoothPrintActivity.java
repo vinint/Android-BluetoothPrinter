@@ -300,7 +300,6 @@ public class BluetoothPrintActivity extends FragmentActivity implements AdapterV
 
         //draw Image
 
-
         printerProtocol.printAndFeed(new PrintCallback() {
             @Override
             public void onPrintFail(int code) {
