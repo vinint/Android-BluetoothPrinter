@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import io.vin.android.bluetoothprinter.RT.RTBluetoothPrinterFactory;
 import io.vin.android.bluetoothprinter.demo.adapter.BluetoothDeviceAdapter;
 import io.vin.android.bluetoothprinter.demo.receiver.BluetoothBroadcastReceiver;
 import io.vin.android.bluetoothprinter.hprt.HprtBluetoothPrinterFactory;
@@ -275,6 +276,8 @@ public class BluetoothPrintActivity extends FragmentActivity implements AdapterV
         //快麦KM-118B、KM-218BT、KM-300S
         BluetoothPrinterManager.getInstance().registerPrinter("KM-118B", new KuaiMaiBluetoothPrinterFactory("KM-118B"), 1);
         BluetoothPrinterManager.getInstance().registerPrinter("KM-218BT", new KuaiMaiBluetoothPrinterFactory("KM-218BT"), 1);
+        //容大
+        BluetoothPrinterManager.getInstance().registerPrinter("RPP322", new RTBluetoothPrinterFactory("RPP322"), 1);
 
     }
 
