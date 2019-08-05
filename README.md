@@ -9,7 +9,7 @@ Android蓝牙打印机驱动库
 
 ```java
 compile 'io.vin.android:bluetoothprinterprotocol:1.0.0'
-compile 'io.vin.android:bluetoothprinter:1.0.0'
+compile 'io.vin.android:bluetoothprinter:1.0.5'
 ```
 
 
@@ -27,7 +27,7 @@ compile 'io.vin.android:bluetoothprinter:1.0.0'
 <dependency>
   <groupId>io.vin.android</groupId>
   <artifactId>bluetoothprinter</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.5</version>
   <type>pom</type>
 </dependency>
 
