@@ -37,9 +37,8 @@ dependencies {
     implementation files('libs/rt_printer_drive.jar')
 }
 
+//upload to internal maven
+//apply from: 'uploadInternalMaven.gradle'
 
-//上传到Jcenter
+//upload to Jcenter
 apply from: 'uploadJcenter.gradle'
-
-//上传到内部maven
-//apply from: 'uploadLocalMavenMaven.gradle'

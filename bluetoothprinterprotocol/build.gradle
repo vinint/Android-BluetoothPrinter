@@ -32,8 +32,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
 
-//上传到Jcenter
-apply from: 'uploadJcenter.gradle'
+//upload to internal maven
+//apply from: 'uploadInternalMaven.gradle'
 
-//上传到内部maven
-//apply from: 'uploadLocalMavenMaven.gradle'
+//upload to Jcenter
+apply from: 'uploadJcenter.gradle'

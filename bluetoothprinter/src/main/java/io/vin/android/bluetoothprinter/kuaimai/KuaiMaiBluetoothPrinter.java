@@ -246,6 +246,42 @@ public class KuaiMaiBluetoothPrinter implements IBluetoothPrinterProtocol {
         if (TextUtils.isEmpty(text)){
             return;
         }
+        if (width == 0 || height == 0) {
+            //不换行
+            printTextALL(startX,  startY,  width,  height,  text,  fontSize,  textStyle,  color,  rotation);
+        } else {
+            //换行
+            int widthTmp =0;
+            int startYTmp =startY;
+            String textTmp ="";
+            char[] array = text.toCharArray();
+            for (int i = 0; i < array.length; ++i) {
+                if ((char) ((byte) array[i]) != array[i]) {
+                    //中文
+                    widthTmp += fontSize;
+                } else {
+                    //英文
+                    widthTmp += fontSize/2;
+                }
+
+                if (widthTmp >= width) {
+                    textTmp += String.valueOf(array[i]);
+                    printTextALL(startX,startYTmp,0,0,textTmp,fontSize,textStyle,color,rotation);
+                    widthTmp =0;
+                    startYTmp += fontSize + 2;
+                    textTmp = "";
+                }else {
+                    textTmp += String.valueOf(array[i]);
+                }
+            }
+
+            if (!textTmp.isEmpty()){
+                printTextALL(startX,startYTmp,0,0,textTmp,fontSize,textStyle,color,rotation);
+            }
+        }
+    }
+
+    private void printTextALL(int startX, int startY, int width, int height, String text, int fontSize, int textStyle, int color, int rotation){
         if (STYLE_TEXT_BOLD == textStyle){
             printTextNormaL(startX,  startY,  width,  height,  text,  fontSize,  textStyle,  color,  rotation);
         }else {
@@ -333,16 +369,16 @@ public class KuaiMaiBluetoothPrinter implements IBluetoothPrinterProtocol {
                 y_multiplication = 2;
                 break;
             case FONT_SIZE_64:
-                //4: 24 x 32 fixed pitch dot font
-                font = "4";
-                x_multiplication = 2;
-                y_multiplication = 2;
+                //3: 16 x 24 fixed pitch dot font
+                font = "3";
+                x_multiplication = 3;
+                y_multiplication = 3;
                 break;
             case FONT_SIZE_72:
                 //3: 16 x 24 fixed pitch dot font
                 font ="3";
-                x_multiplication = 3;
-                y_multiplication = 3;
+                x_multiplication = 4;
+                y_multiplication = 4;
                 break;
             case FONT_SIZE_84:
                 //2: 12 x 20 fixed pitch dot font
@@ -386,53 +422,9 @@ public class KuaiMaiBluetoothPrinter implements IBluetoothPrinterProtocol {
         writeData(data);
     }
 
-
-
     private void printTextBold(int startX, int startY, int width, int height, String text, int fontSize, int textStyle, int color, int rotation){
 
     }
-
-
-    public void printText2(String x_pos,
-                           String y_pos,
-                           String bold,
-                           String rotation,
-                           int size,
-                           String code_data) throws Exception {
-        String var6 = "1";
-        String var7 = "1";
-        switch (size) {
-            case 1:
-                var6 = "1";
-                var7 = "1";
-                break;
-            case 2:
-                var6 = "2";
-                var7 = "2";
-                break;
-            case 3:
-                var6 = "3";
-                var7 = "3";
-                break;
-            case 4:
-                var6 = "4";
-                var7 = "4";
-                break;
-            case 5:
-                var6 = "5";
-                var7 = "5";
-                break;
-            case 6:
-                var6 = "6";
-                var7 = "6";
-                break;
-            case 7:
-                var6 = "7";
-                var7 = "7";
-        }
-        writeData(("TEXT " + x_pos + "," + y_pos + ",\"" + bold + "\"," + rotation + "," + var6 + "," + var7 + ",\"" + code_data + "\"\r\n").getBytes(LanguageEncode));
-    }
-
 
     /**
      * Method     打印条码
@@ -470,6 +462,8 @@ public class KuaiMaiBluetoothPrinter implements IBluetoothPrinterProtocol {
         }
 
         String codeType = "128";
+        int narrow = lineWidth+1;
+        int wide = lineWidth*2;
 
 //        128，128M，EAN128 ，39 ，93，UPCA ，MSI ，ITF14
         switch (type) {
@@ -497,7 +491,8 @@ public class KuaiMaiBluetoothPrinter implements IBluetoothPrinterProtocol {
                             "%d," +
                             "%d," +
                             "\"%s\"," +
-                            "%d," + "0," +
+                            "%d," +
+                            "%s," +
                             "%d," +
                             "%d," +
                             "%d," +
@@ -506,9 +501,10 @@ public class KuaiMaiBluetoothPrinter implements IBluetoothPrinterProtocol {
                     startY,
                     codeType,
                     height,
+                    "0",
                     rotation,
-                    lineWidth,
-                    lineWidth,
+                    narrow,
+                    wide,
                     text).getBytes(LanguageEncode);
         } catch (UnsupportedEncodingException ex) {
 

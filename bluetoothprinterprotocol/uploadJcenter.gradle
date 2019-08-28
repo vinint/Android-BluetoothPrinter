@@ -1,30 +1,47 @@
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-//repository
-def BINTRAY_REPOSITORY = 'android'
+//Jcenter account info
+def BINTRAY_REPOSITORY = ''
+def BINTRAY_USER = ''
+def BINTRAY_APIKEY = ''
 
 //pom info
-def POM_NAME='bluetoothprinterprotocol'
-def POM_VERSION='1.0.0'
-def POM_ARTIFACTID='bluetoothprinterprotocol'
-def POM_GROUPID='io.vin.android'
-def POM_PACKAGING='aar'
-def POM_DESCRIPTION='Android bluetooth printer drive protocol'
+def POM_NAME = ''
+def POM_VERSION = ''
+def POM_ARTIFACTID = ''
+def POM_GROUPID = ''
+def POM_PACKAGING = ''
+def POM_DESCRIPTION = ''
 
 // code url
 def SITE_URL = 'https://github.com/vinint/Android-BluetoothPrinter'
-def GIT_URL  = 'https://github.com/vinint/Android-BluetoothPrinter.git'
+def GIT_URL = 'https://github.com/vinint/Android-BluetoothPrinter.git'
 
 // developer info
-def DEVELOPER_ID   =''
-def DEVELOPER_NAME ='vin'
-def DEVELOPER_EMAIL= 'vinintg@gmail.com'
+def DEVELOPER_ID = ''
+def DEVELOPER_NAME = 'vin'
+def DEVELOPER_EMAIL = 'vinintg@gmail.com'
 
 // license info
 def LICENSE_NAME = 'Apache License, Version 2.0'
-def LICENSE_URL  = 'https://opensource.org/licenses/Apache-2.0'
+def LICENSE_URL = 'https://opensource.org/licenses/Apache-2.0'
 def LICENSES_ALL = ["Apache-2.0"]
+
+//read property from local.properties file
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+BINTRAY_REPOSITORY = properties.getProperty("BINTRAY_REPOSITORY").trim()
+BINTRAY_USER = properties.getProperty("BINTRAY_USER").trim()
+BINTRAY_APIKEY = properties.getProperty("BINTRAY_APIKEY").trim()
+
+POM_NAME = properties.getProperty("BLUETOOTH_PRINTER_PROTOCOL_POM_NAME").trim()
+POM_VERSION = properties.getProperty("BLUETOOTH_PRINTER_PROTOCOL_POM_VERSION").trim()
+POM_ARTIFACTID = properties.getProperty("BLUETOOTH_PRINTER_PROTOCOL_POM_ARTIFACTID").trim()
+POM_GROUPID = properties.getProperty("BLUETOOTH_PRINTER_PROTOCOL_POM_GROUPID").trim()
+POM_PACKAGING = properties.getProperty("BLUETOOTH_PRINTER_PROTOCOL_POM_PACKAGING").trim()
+POM_DESCRIPTION = properties.getProperty("BLUETOOTH_PRINTER_PROTOCOL_POM_DESCRIPTION").trim()
 
 group = POM_GROUPID
 version = POM_VERSION
@@ -38,7 +55,6 @@ install {
             packaging POM_PACKAGING
             description POM_DESCRIPTION// 项目描述（可选）
 
-            // Zbar and libiconv are based on LGPL-2.1 open source
             licenses {
                 license {
                     name LICENSE_NAME
@@ -48,15 +64,15 @@ install {
 
             developers {
                 developer {
-                    id    DEVELOPER_ID    // 开发者的id。
-                    name  DEVELOPER_NAME  // 开发者名字。
+                    id DEVELOPER_ID    // 开发者的id。
+                    name DEVELOPER_NAME  // 开发者名字。
                     email DEVELOPER_EMAIL // 开发者邮箱。
                 }
             }
 
             // SCM
             scm {
-                url        SITE_URL // 项目主页。
+                url SITE_URL // 项目主页。
                 connection GIT_URL  // Git仓库地址。
                 developerConnection GIT_URL // Git仓库地址。
             }
@@ -64,13 +80,6 @@ install {
     }
 }
 
-// 生成jar包的task，不需要修改。
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-// 生成jarDoc的task，不需要修改。
 task javadoc(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
@@ -78,10 +87,16 @@ task javadoc(type: Javadoc) {
     failOnError false // 忽略注释语法错误，如果用jdk1.8你的注释写的不规范就编译不过。
 }
 
-// 生成javaDoc的jar，不需要修改。
+// package java docs
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
+}
+
+// package source
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
 }
 
 artifacts {
@@ -89,22 +104,24 @@ artifacts {
     archives sourcesJar
 }
 
-// 这里是读取Bintray相关的信息，我们上传项目到github上的时候会把gradle文件传上去，所以不要把帐号密码的信息直接写在这里，写在local.properties中，这里动态读取。
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
+// upload to jcenter
 bintray {
-
-    user = properties.getProperty("bintray.user") // Bintray的用户名。
-    key = properties.getProperty("bintray.apikey") // Bintray刚才保存的ApiKey。
+    user = BINTRAY_USER // Bintray的用户名。
+    key = BINTRAY_APIKEY// Bintray刚才保存的ApiKey。
 
     configurations = ['archives']
     pkg {
-        repo      = BINTRAY_REPOSITORY  // bintray网站上的Repository名字（需先添加）
-        name      = POM_NAME            // 发布到Repository上面的包名（需先添加）
-        userOrg    = ''                 //Bintray的组织id
+        repo = BINTRAY_REPOSITORY  // bintray网站上的Repository名字（需先添加）
+        name = POM_NAME            // 发布到Repository上面的包名（需先添加）
+        userOrg = ''               //Bintray的组织id
         websiteUrl = SITE_URL
-        vcsUrl    = GIT_URL
-        licenses  = LICENSES_ALL
-        publish   = true // 是否是公开项目。
+        vcsUrl = GIT_URL
+        licenses = LICENSES_ALL
+        publish = true // 是否是公开项目。
     }
+}
+
+// use new task name
+project.task('upload2Jcenter', group: "vin", description: "upload to Jcenter", dependsOn: ["bintrayUpload"] ).doLast {
+    println "***************upload to Jcenter finish!***************"
 }
