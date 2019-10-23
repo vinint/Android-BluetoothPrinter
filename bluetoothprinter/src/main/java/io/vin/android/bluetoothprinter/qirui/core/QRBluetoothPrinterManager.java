@@ -27,7 +27,7 @@ import io.vin.android.bluetoothprinterprotocol.PrintCallback;
 
 
 public class QRBluetoothPrinterManager {
-    private long mCurrentTimeMillis  = 0;
+    private long mCurrentTimeMillis = 0;
     private static final String TAG = QRBluetoothPrinterManager.class.getSimpleName();
     public int PrinterName;
     private BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -45,7 +45,7 @@ public class QRBluetoothPrinterManager {
     private Runnable stopSPPScanRunnable;
     public boolean isQRprinter = true;
 
-    private Map<String,Boolean> printerMacMap= new HashMap<>();
+    private Map<String, Boolean> printerMacMap = new HashMap<>();
 
     public QRBluetoothPrinterManager(String name) {
         if (name.contains("380")) {
@@ -70,11 +70,11 @@ public class QRBluetoothPrinterManager {
             onDeviceConnected();
             if (PrinterName == 1) {
                 Boolean tmp = printerMacMap.get(address);
-                if (tmp!=null){
+                if (tmp != null) {
                     isQRprinter = tmp;
-                }else {
+                } else {
                     isQRprinter = !checkIsHprtPrinter();
-                    printerMacMap.put(address,isQRprinter);
+                    printerMacMap.put(address, isQRprinter);
                 }
             }
         } else {
@@ -240,67 +240,68 @@ public class QRBluetoothPrinterManager {
                     scale = 1;
                     break;
             }
-        }
-        switch (fontSize) {
-            case 16:
-                fontString = "55";
-                sizeString = "0";
-                break;
-            case 20:
-                fontString = "3";
-                sizeString = "1";
-                break;
-            case 24:
-                fontString = "24";
-                sizeString = "0";
-                break;
-            case 28:
-                fontString = "28";
-                sizeString = "0";
-                break;
-            case 32:
-                fontString = "4";
-                sizeString = "0";
-                break;
-            case 40:
-                fontString = "3";
-                sizeString = "1";
-                scale = 2;
-                break;
-            case 48:
-                fontString = "24";
-                sizeString = "0";
-                scale = 2;
-                break;
-            case 56:
-                fontString = "4";
-                sizeString = "3";
-                break;
-            case 64:
-                fontString = "4";
-                sizeString = "0";
-                scale = 2;
-                break;
-            case 72:
-                fontString = "24";
-                sizeString = "0";
-                scale = 3;
-                break;
-            case 84:
-                fontString = "28";
-                sizeString = "0";
-                scale = 3;
-                break;
-            case 96:
-                fontString = "4";
-                sizeString = "0";
-                scale = 3;
-                break;
-            default:
-                fontString = "55";
-                sizeString = "0";
-                scale = 1;
-                break;
+        } else {
+            switch (fontSize) {
+                case 16:
+                    fontString = "55";
+                    sizeString = "0";
+                    break;
+                case 20:
+                    fontString = "3";
+                    sizeString = "1";
+                    break;
+                case 24:
+                    fontString = "24";
+                    sizeString = "0";
+                    break;
+                case 28:
+                    fontString = "28";
+                    sizeString = "0";
+                    break;
+                case 32:
+                    fontString = "4";
+                    sizeString = "0";
+                    break;
+                case 40:
+                    fontString = "3";
+                    sizeString = "1";
+                    scale = 2;
+                    break;
+                case 48:
+                    fontString = "24";
+                    sizeString = "0";
+                    scale = 2;
+                    break;
+                case 56:
+                    fontString = "4";
+                    sizeString = "3";
+                    break;
+                case 64:
+                    fontString = "4";
+                    sizeString = "0";
+                    scale = 2;
+                    break;
+                case 72:
+                    fontString = "24";
+                    sizeString = "0";
+                    scale = 3;
+                    break;
+                case 84:
+                    fontString = "28";
+                    sizeString = "0";
+                    scale = 3;
+                    break;
+                case 96:
+                    fontString = "4";
+                    sizeString = "0";
+                    scale = 3;
+                    break;
+                default:
+                    fontString = "55";
+                    sizeString = "0";
+                    scale = 1;
+                    break;
+            }
         }
         write("SETMAG " + scale + " " + scale + "\r\n");
         stringData = stringData + textCommand + " " + fontString + " " + sizeString + " " + x + " " + y + " " + text + "\r\n";
@@ -552,16 +553,16 @@ public class QRBluetoothPrinterManager {
     public void printAndFeed(PrintCallback printCallback) {
         feedToNextLabel();
         print(printCallback);
-        if (isQRprinter&&(this.PrinterName == 1)){
+        if (isQRprinter && (this.PrinterName == 1)) {
             write(new byte[]{(byte) 14});
             return;
         }
     }
 
     public void feedToNextLabel() {
-        if (isQRprinter&&(this.PrinterName == 1)){
+        if (isQRprinter && (this.PrinterName == 1)) {
             //启瑞QR380A
-        }else {
+        } else {
             write("GAP-SENSE\r\nFORM\r\n");
         }
     }
@@ -753,11 +754,11 @@ public class QRBluetoothPrinterManager {
             if (PrinterName == 1) {
                 String address = socket.getRemoteDevice().getAddress();
                 Boolean tmp = printerMacMap.get(address);
-                if (tmp!=null){
+                if (tmp != null) {
                     isQRprinter = tmp;
-                }else {
+                } else {
                     isQRprinter = !checkIsHprtPrinter();
-                    printerMacMap.put(address,isQRprinter);
+                    printerMacMap.put(address, isQRprinter);
                 }
             }
         } catch (IOException e) {
@@ -785,16 +786,16 @@ public class QRBluetoothPrinterManager {
     public int printerStatusQR() {
         //防止启瑞打印机 调用打印后，立即调用获取状态，获取不到状态
         long now = System.currentTimeMillis();
-        if ((mCurrentTimeMillis != 0)&&(now-mCurrentTimeMillis)<2000){
+        if ((mCurrentTimeMillis != 0) && (now - mCurrentTimeMillis) < 2000) {
             //386设备
             long millis = 2000;
-            if (isQRprinter&&PrinterName ==1){
+            if (isQRprinter && PrinterName == 1) {
                 //380设备
                 millis = 2000;
             }
             try {
                 TimeUnit.MILLISECONDS.sleep(millis);
-            }catch (InterruptedException ex){
+            } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
         }
@@ -835,12 +836,12 @@ public class QRBluetoothPrinterManager {
                     } else if ((Rep[0] & 8) != 0) {
                         //打印中
                         status = 16;
-                    }else if (length>=2 && Rep[0] == 79 && Rep[1] == 75) {
+                    } else if (length >= 2 && Rep[0] == 79 && Rep[1] == 75) {
                         status = 0;
                     } else {
                         status = 8;
                     }
-                }else {
+                } else {
                     //读不到值，默认打印中
                     status = 16;
                 }
@@ -851,7 +852,7 @@ public class QRBluetoothPrinterManager {
         return status;
     }
 
-     /**
+    /**
      * Method     获取汉印打印机状态
      * Parameters
      * Return
@@ -863,12 +864,12 @@ public class QRBluetoothPrinterManager {
     public int printerStatusHprt() {
         //防止HM-300刷成QR380打印机 调用打印后，立即调用获取状态，获取不到状态
         long now = System.currentTimeMillis();
-        if ((mCurrentTimeMillis != 0)&&(now-mCurrentTimeMillis)<2000){
+        if ((mCurrentTimeMillis != 0) && (now - mCurrentTimeMillis) < 2000) {
             //386设备
             long millis = 2000;
             try {
                 TimeUnit.MILLISECONDS.sleep(millis);
-            }catch (InterruptedException ex){
+            } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
         }
@@ -907,9 +908,9 @@ public class QRBluetoothPrinterManager {
                     } else if (tmpStatus == 8) {
                         //电量低
                         status = 4;
-                    } else if (Rep[0] == 110){
+                    } else if (Rep[0] == 110) {
                         status = -2;
-                    }else {
+                    } else {
                         //其他错误
                         status = -1;
                     }
@@ -1074,15 +1075,15 @@ public class QRBluetoothPrinterManager {
     }
 
     /**
-     *Method     检查是否是汉印刷成的QR380A
-     *Parameters []
-     *Return     boolean
-     *Author     Vin
-     *Mail       vinintg@gmail.com
-     *Createtime 2019-04-26 15:38
-     *Modifytime 2019-04-26 15:38
+     * Method     检查是否是汉印刷成的QR380A
+     * Parameters []
+     * Return     boolean
+     * Author     Vin
+     * Mail       vinintg@gmail.com
+     * Createtime 2019-04-26 15:38
+     * Modifytime 2019-04-26 15:38
      */
-    public boolean checkIsHprtPrinter(){
+    public boolean checkIsHprtPrinter() {
         boolean isHprt = false;
         if (isConnected) {
             flushReadBuffer();
@@ -1090,10 +1091,10 @@ public class QRBluetoothPrinterManager {
             try {
                 this.outputStream.write(cmdJni, 0, cmdJni.length);
                 byte[] respBytes = ReadData(3);
-                if (respBytes==null||respBytes.length ==0){
+                if (respBytes == null || respBytes.length == 0) {
                     //启瑞打印机
                     isHprt = false;
-                }else {
+                } else {
                     //汉英打印机
                     isHprt = true;
                 }
