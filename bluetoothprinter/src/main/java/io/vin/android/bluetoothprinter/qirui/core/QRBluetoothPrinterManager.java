@@ -821,6 +821,8 @@ public class QRBluetoothPrinterManager {
                     if (Rep[0] == 0) {
                         //打印机正常
                         status = 0;
+                    } else if (length >= 2 && Rep[0] == 79 && Rep[1] == 75) {
+                        status = 0;
                     } else if ((Rep[0] & 16) != 0) {
                         //盖子打开
                         status = 1;
@@ -836,8 +838,6 @@ public class QRBluetoothPrinterManager {
                     } else if ((Rep[0] & 8) != 0) {
                         //打印中
                         status = 16;
-                    } else if (length >= 2 && Rep[0] == 79 && Rep[1] == 75) {
-                        status = 0;
                     } else {
                         status = 8;
                     }
