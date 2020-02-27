@@ -33,11 +33,25 @@ import io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol;
 import io.vin.android.bluetoothprinterprotocol.PrintCallback;
 
 import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.COLOR_BLACK;
+import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.FONT_SIZE_128;
+import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.FONT_SIZE_16;
+import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.FONT_SIZE_20;
+import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.FONT_SIZE_24;
+import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.FONT_SIZE_28;
 import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.FONT_SIZE_32;
+import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.FONT_SIZE_40;
+import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.FONT_SIZE_48;
+import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.FONT_SIZE_56;
+import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.FONT_SIZE_64;
+import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.FONT_SIZE_72;
+import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.FONT_SIZE_84;
+import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.FONT_SIZE_96;
+import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.ORIENTATION_DEFAULT;
 import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.QRCODE_CORRECTION_LEVEL_H;
 import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.QRCODE_UNIT_WIDTH_6;
 import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.STYLE_BARCODE_CODE128;
 import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.STYLE_ROTATION_0;
+import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.STYLE_ROTATION_90;
 import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.STYLE_TEXT_NO;
 
 public class BluetoothPrintActivity extends FragmentActivity implements AdapterView.OnItemClickListener ,View.OnClickListener{
@@ -273,9 +287,12 @@ public class BluetoothPrintActivity extends FragmentActivity implements AdapterV
         //芝柯
         BluetoothPrinterManager.getInstance().registerPrinter("ZTO588", new ZicoxBluetoothPrinterFactory(""), 4);
         BluetoothPrinterManager.getInstance().registerPrinter("XT423", new ZicoxBluetoothPrinterFactory(""), 4);
-        //快麦KM-118B、KM-218BT、KM-300S
+        //快麦KM-118B、KM-218BT
         BluetoothPrinterManager.getInstance().registerPrinter("KM-118B", new KuaiMaiBluetoothPrinterFactory("KM-118B"), 1);
         BluetoothPrinterManager.getInstance().registerPrinter("KM-218BT", new KuaiMaiBluetoothPrinterFactory("KM-218BT"), 1);
+        BluetoothPrinterManager.getInstance().registerPrinter("KM-202BT", new KuaiMaiBluetoothPrinterFactory("KM-202BT"), 1);
+        BluetoothPrinterManager.getInstance().registerPrinter("KM-202MBT", new KuaiMaiBluetoothPrinterFactory("KM-202MBT"), 1);
+        BluetoothPrinterManager.getInstance().registerPrinter("KM-202MP", new KuaiMaiBluetoothPrinterFactory("KM-202MP"), 1);
         //容大
         BluetoothPrinterManager.getInstance().registerPrinter("RPP322", new RTBluetoothPrinterFactory("RPP322"), 1);
 
@@ -287,19 +304,45 @@ public class BluetoothPrintActivity extends FragmentActivity implements AdapterV
             return;
         }
 
+        printerProtocol.setPage(100*8,180*8,ORIENTATION_DEFAULT);
+
         //draw Line
         printerProtocol.drawLine(3*8,13*8,3*8,3*8,3,IBluetoothPrinterProtocol.STYLE_LINE_FULL);
 
         printerProtocol.drawLine(3*8,3*8,3*8,13*8,3,IBluetoothPrinterProtocol.STYLE_LINE_FULL);
 
         //draw Text
-        printerProtocol.drawText(3*8,5*8,0,0,"test draw text",FONT_SIZE_32,STYLE_TEXT_NO,COLOR_BLACK,STYLE_ROTATION_0);
+        printerProtocol.drawText(3*8,5*8,0,0,"16一朝风月万古长空",FONT_SIZE_16,STYLE_TEXT_NO,COLOR_BLACK,STYLE_ROTATION_0);
+
+        printerProtocol.drawText(3*8,8*8,0,0,"20一朝风月万古长空",FONT_SIZE_20,STYLE_TEXT_NO,COLOR_BLACK,STYLE_ROTATION_0);
+
+        printerProtocol.drawText(3*8,12*8,0,0,"24一朝风月万古长空",FONT_SIZE_24,STYLE_TEXT_NO,COLOR_BLACK,STYLE_ROTATION_0);
+
+        printerProtocol.drawText(3*8,16*8,0,0,"28一朝风月万古长空",FONT_SIZE_28,STYLE_TEXT_NO,COLOR_BLACK,STYLE_ROTATION_0);
+
+        printerProtocol.drawText(3*8,20*8,0,0,"32一朝风月万古长空",FONT_SIZE_32,STYLE_TEXT_NO,COLOR_BLACK,STYLE_ROTATION_0);
+
+        printerProtocol.drawText(3*8,25*8,0,0,"40一朝风月万古长空",FONT_SIZE_40,STYLE_TEXT_NO,COLOR_BLACK,STYLE_ROTATION_0);
+
+        printerProtocol.drawText(3*8,31*8,0,0,"48一朝风月万古长空",FONT_SIZE_48,STYLE_TEXT_NO,COLOR_BLACK,STYLE_ROTATION_0);
+
+        printerProtocol.drawText(3*8,37*8,0,0,"56一朝风月万古长空",FONT_SIZE_56,STYLE_TEXT_NO,COLOR_BLACK,STYLE_ROTATION_0);
+
+        printerProtocol.drawText(3*8,44*8,0,0,"64一朝风月万古长空",FONT_SIZE_64,STYLE_TEXT_NO,COLOR_BLACK,STYLE_ROTATION_0);
+
+        printerProtocol.drawText(3*8,52*8,0,0,"72一朝风月万古长空",FONT_SIZE_72,STYLE_TEXT_NO,COLOR_BLACK,STYLE_ROTATION_0);
+
+        printerProtocol.drawText(3*8,61*8,0,0,"84一朝风月万古长空",FONT_SIZE_84,STYLE_TEXT_NO,COLOR_BLACK,STYLE_ROTATION_0);
+
+        printerProtocol.drawText(3*8,72*8,0,0,"96一朝风月万古长空",FONT_SIZE_96,STYLE_TEXT_NO,COLOR_BLACK,STYLE_ROTATION_0);
+
+        printerProtocol.drawText(3*8,84*8,0,0,"128一朝风月万古长空0",FONT_SIZE_128,STYLE_TEXT_NO,COLOR_BLACK,STYLE_ROTATION_0);
 
         //draw Barcode
-        printerProtocol.drawBarCode(3*8,8*8,10*8,2,"12345678",STYLE_BARCODE_CODE128,STYLE_ROTATION_0);
+        printerProtocol.drawBarCode(3*8,105*8,10*8,2,"12345678",STYLE_BARCODE_CODE128,STYLE_ROTATION_0);
 
         //draw Qrcode
-        printerProtocol.drawQRCode(3*8,18*8,"test draw qrcode",QRCODE_UNIT_WIDTH_6,QRCODE_CORRECTION_LEVEL_H,STYLE_ROTATION_0);
+        printerProtocol.drawQRCode(3*8,120*8,"test draw qrcode",QRCODE_UNIT_WIDTH_6,QRCODE_CORRECTION_LEVEL_H,STYLE_ROTATION_0);
 
         //draw Image
 

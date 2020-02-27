@@ -13,9 +13,24 @@ public class KuaiMaiBluetoothPrinterFactory implements IBluetoothPrinterFactory{
 
     @Override
     public IBluetoothPrinterProtocol create() {
-        if (printer == null){
-            printer = new KuaiMaiBluetoothPrinter(printerModelName);
+        if (printer == null) {
+            String tmpName = printerModelName.toUpperCase();
+            if (tmpName.startsWith("KM-118B") ||
+                    tmpName.startsWith("KM-218BT")) {
+                printer = new KuaiMaiBluetoothPrinter(printerModelName);
+            } else if (tmpName.startsWith("KM-202BT") ||
+                    tmpName.startsWith("KM-202MBT")||
+                    tmpName.startsWith("KM-202MP")||
+                    tmpName.startsWith("KM-360")) {
+                printer = new KuaiMaiBluetoothPrinter2(printerModelName);
+            }else {
+                printer = new KuaiMaiBluetoothPrinter(printerModelName);
+            }
+
+
         }
+
+
         return printer;
     }
 }

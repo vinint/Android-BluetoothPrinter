@@ -234,6 +234,30 @@ public class BluetoothPrinterManager {
     }
 
     /**
+     * Method     getPrinterName
+     * 获取打印机名字
+     * Parameters []
+     * Return     java.lang.String
+     * Author     Vin
+     * Mail       vinintg@gmail.com
+     */
+    public synchronized String getPrinterName(){
+        return this.printerName;
+    }
+
+    /**
+     * Method     getPrinterAddress
+     * 获取打印机MAC
+     * Parameters []
+     * Return     java.lang.String
+     * Author     Vin
+     * Mail       vinintg@gmail.com
+     */
+    public synchronized String getPrinterAddress(){
+        return this.printerAddress;
+    }
+
+    /**
      *Method     获取打印机模板
      *Parameters []
      *Return     int

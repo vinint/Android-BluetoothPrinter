@@ -20,11 +20,12 @@ import io.vin.android.bluetoothprinterprotocol.PrintCallback;
 
 /**
  * 快麦打印机驱动
- * 目前只调试了KM-118 KM-218（TSPL指令集）
+ * KM-202BT KM-202MBT KM-202MP
+ * //KM-360暂未支持
  * Author     Vin
  * Mail       vinintg@gmail.com
  */
-public class KuaiMaiBluetoothPrinter implements IBluetoothPrinterProtocol {
+public class KuaiMaiBluetoothPrinter2 implements IBluetoothPrinterProtocol {
     String LanguageEncode = "gb2312";
     private BluetoothAdapter mBluetoothAdapter;
     public BluetoothSocket mBtSocket;
@@ -34,7 +35,7 @@ public class KuaiMaiBluetoothPrinter implements IBluetoothPrinterProtocol {
     private String mPrinterName;
     private String mPrinterAddr;
 
-    public KuaiMaiBluetoothPrinter(String printerModelName) {
+    public KuaiMaiBluetoothPrinter2(String printerModelName) {
         this.mPrinterName = printerModelName;
     }
 
@@ -174,12 +175,12 @@ public class KuaiMaiBluetoothPrinter implements IBluetoothPrinterProtocol {
 
         int width = 0;
         int height = 0;
-        if (startX == endX){
+        if (startX == endX) {
             //竖线
-            height = endY -startY;
+            height = endY - startY;
             width = lineWidth;
         }
-        if (startY == endY){
+        if (startY == endY) {
             //横线
             height = lineWidth;
             width = endX - startX;
@@ -244,17 +245,17 @@ public class KuaiMaiBluetoothPrinter implements IBluetoothPrinterProtocol {
     @Override
     public void drawText(int startX, int startY, int width, int height, String text, int fontSize, int textStyle, int color, int rotation) {
         //TEXT x,y,"font",rotation,x-multiplication,y-multiplication,[alignment,]"content"
-        if (TextUtils.isEmpty(text)){
+        if (TextUtils.isEmpty(text)) {
             return;
         }
         if (width == 0 || height == 0) {
             //不换行
-            printTextALL(startX,  startY,  width,  height,  text,  fontSize,  textStyle,  color,  rotation);
+            printTextALL(startX, startY, width, height, text, fontSize, textStyle, color, rotation);
         } else {
             //换行
-            int widthTmp =0;
-            int startYTmp =startY;
-            String textTmp ="";
+            int widthTmp = 0;
+            int startYTmp = startY;
+            String textTmp = "";
             char[] array = text.toCharArray();
             for (int i = 0; i < array.length; ++i) {
                 if ((char) ((byte) array[i]) != array[i]) {
@@ -262,50 +263,39 @@ public class KuaiMaiBluetoothPrinter implements IBluetoothPrinterProtocol {
                     widthTmp += fontSize;
                 } else {
                     //英文
-                    widthTmp += fontSize/2;
+                    widthTmp += fontSize / 2;
                 }
 
                 if (widthTmp >= width) {
                     textTmp += String.valueOf(array[i]);
-                    printTextALL(startX,startYTmp,0,0,textTmp,fontSize,textStyle,color,rotation);
-                    widthTmp =0;
+                    printTextALL(startX, startYTmp, 0, 0, textTmp, fontSize, textStyle, color, rotation);
+                    widthTmp = 0;
                     startYTmp += fontSize + 2;
                     textTmp = "";
-                }else {
+                } else {
                     textTmp += String.valueOf(array[i]);
                 }
             }
 
-            if (!textTmp.isEmpty()){
-                printTextALL(startX,startYTmp,0,0,textTmp,fontSize,textStyle,color,rotation);
+            if (!textTmp.isEmpty()) {
+                printTextALL(startX, startYTmp, 0, 0, textTmp, fontSize, textStyle, color, rotation);
             }
         }
     }
 
-    private void printTextALL(int startX, int startY, int width, int height, String text, int fontSize, int textStyle, int color, int rotation){
-        if (STYLE_TEXT_BOLD == textStyle){
-            printTextNormaL(startX,  startY,  width,  height,  text,  fontSize,  textStyle,  color,  rotation);
-        }else {
-            printTextNormaL(startX,  startY,  width,  height,  text,  fontSize,  textStyle,  color,  rotation);
-        }
+    private void printTextALL(int startX, int startY, int width, int height, String text, int fontSize, int textStyle, int color, int rotation) {
+        printTextNormaL(startX, startY, width, height, text, fontSize, textStyle, color, rotation);
     }
 
-    private void printTextNormaL(int startX, int startY, int width, int height, String text, int fontSize, int textStyle, int color, int rotation){
+    private void printTextNormaL(int startX, int startY, int width, int height, String text, int fontSize, int textStyle, int color, int rotation) {
         //        参数:
 //        x:文字起始 x 坐标
 //        y:文字起始 y 坐标
-//        font:
-//            height x width
-//            0: Monotye CG Triumvirate Bold Condensed, font width and height is stretchable
-//            1: 8 x 12 fixed pitch dot font
-//            2: 12 x 20 fixed pitch dot font
-//            3: 16 x 24 fixed pitch dot font
-//            4: 24 x 32 fixed pitch dot font
-//            5: 32 x 48 dot fixed pitch font
-//            6: 14 x 19 dot fixed pitch font OCR-B
-//            7: 21 x 27 dot fixed pitch font OCR-B
-//            8: 14 x25 dot fixed pitch font OCR-A
-//            9:只有这个字体能够打印中文
+//        font: - 字体大小
+//        TSS16.BF2（16点阵）
+//        TSS24.BF2（24点阵）
+//        TSS32.BF2（32点阵）
+
 //        rotation:打印方向
 //            0 : No rotation
 //            90 : degrees, in clockwise direction
@@ -313,6 +303,7 @@ public class KuaiMaiBluetoothPrinter implements IBluetoothPrinterProtocol {
 //            270 : degrees, in clockwise direction
 //        x_multiplication:x 轴方向文字拉伸的倍数
 //        y_multiplication:y 轴方向文字拉伸的倍数
+//        ",B1,\"" 是否加粗
 //        content:文本数据
 
         String font = "1";
@@ -322,109 +313,107 @@ public class KuaiMaiBluetoothPrinter implements IBluetoothPrinterProtocol {
         //根据字体大小进行缩放
         switch (fontSize) {
             case FONT_SIZE_16:
-                //1: 8 x 12 fixed pitch dot font
-                font ="1";
+                font = "TSS16.BF2";
                 x_multiplication = 1;
                 y_multiplication = 1;
                 break;
             case FONT_SIZE_20:
-                //1: 8 x 12 fixed pitch dot font
-                font ="1";
+                font = "TSS16.BF2";
                 x_multiplication = 1;
                 y_multiplication = 1;
                 break;
             case FONT_SIZE_24:
-                //1: 8 x 12 fixed pitch dot font
-                font = "3";
+                font = "TSS24.BF2";
                 x_multiplication = 1;
                 y_multiplication = 1;
                 break;
             case FONT_SIZE_28:
-                //7: 21 x 27 dot fixed pitch font OCR-B
-                font = "7";
+                font = "TSS24.BF2";
                 x_multiplication = 1;
                 y_multiplication = 1;
                 break;
             case FONT_SIZE_32:
-                //1: 8 x 12 fixed pitch dot font
-                font ="1";
-                x_multiplication = 2;
-                y_multiplication = 2;
+                font = "TSS32.BF2";
+                x_multiplication = 1;
+                y_multiplication = 1;
                 break;
             case FONT_SIZE_40:
-                //1: 8 x 12 fixed pitch dot font
-                font ="1";
-                x_multiplication = 2;
-                y_multiplication = 2;
+                font = "TSS32.BF2";
+                x_multiplication = 1;
+                y_multiplication = 1;
                 break;
             case FONT_SIZE_48:
-                //7: 21 x 27 dot fixed pitch font OCR-B
-                font ="5";
+                font = "TSS24.BF2";
                 x_multiplication = 2;
                 y_multiplication = 2;
                 break;
             case FONT_SIZE_56:
-                //7: 21 x 27 dot fixed pitch font OCR-B
-                font ="5";
+                font = "TSS24.BF2";
                 x_multiplication = 2;
                 y_multiplication = 2;
                 break;
             case FONT_SIZE_64:
-                //3: 16 x 24 fixed pitch dot font
-                font = "3";
-                x_multiplication = 3;
-                y_multiplication = 3;
+                font = "TSS32.BF2";
+                x_multiplication = 2;
+                y_multiplication = 2;
                 break;
             case FONT_SIZE_72:
-                //7: 21 x 27 dot fixed pitch font OCR-B
-                font = "7";
+                font = "TSS24.BF2";
                 x_multiplication = 3;
                 y_multiplication = 3;
                 break;
             case FONT_SIZE_84:
-                //7: 21 x 27 dot fixed pitch font OCR-B
-                font = "7";
+                font = "TSS24.BF2";
                 x_multiplication = 3;
                 y_multiplication = 3;
                 break;
             case FONT_SIZE_96:
-                //3: 16 x 24 fixed pitch dot font
-                font ="3";
+                font = "TSS32.BF2";
+                x_multiplication = 3;
+                y_multiplication = 3;
+                break;
+            case FONT_SIZE_128:
+                font = "TSS32.BF2";
                 x_multiplication = 4;
                 y_multiplication = 4;
                 break;
-            case FONT_SIZE_128:
-                //4: 24 x 32 fixed pitch dot font
-                font = "4";
-                x_multiplication = 5;
-                y_multiplication =5;
-                break;
             default:
-                //1: 8 x 12 fixed pitch dot font
-                font ="1";
-                x_multiplication = 2;
+                font = "TSS16.BF2";
+                x_multiplication = 1;
                 y_multiplication = 1;
                 break;
         }
 
         byte[] data = new byte[0];
         try {
-            data = String.format("TEXT %d,%d,\"%s\",%d,%d,%d,\"%s\"\r\n",
-                    startX,
-                    startY,
-                    font,
-                    rotation,
-                    x_multiplication,
-                    y_multiplication,
-                    text)
-                    .getBytes(LanguageEncode);
+            if (STYLE_TEXT_BOLD == textStyle) {
+                data = String.format("TEXT %d,%d,\"%s\",%d,%d,%d,B1,\"%s\"\r\n",
+                        startX,
+                        startY,
+                        font,
+                        rotation,
+                        x_multiplication,
+                        y_multiplication,
+                        text)
+                        .getBytes(LanguageEncode);
+            }else {
+                data = String.format("TEXT %d,%d,\"%s\",%d,%d,%d,\"%s\"\r\n",
+                        startX,
+                        startY,
+                        font,
+                        rotation,
+                        x_multiplication,
+                        y_multiplication,
+                        text)
+                        .getBytes(LanguageEncode);
+            }
         } catch (UnsupportedEncodingException ex) {
-
+            ex.printStackTrace();
         }
         writeData(data);
     }
 
-    private void printTextBold(int startX, int startY, int width, int height, String text, int fontSize, int textStyle, int color, int rotation){
+    private void printTextBold(int startX, int startY, int width, int height, String text, int fontSize, int textStyle, int color, int rotation) {
 
     }
 
@@ -459,13 +448,13 @@ public class KuaiMaiBluetoothPrinter implements IBluetoothPrinterProtocol {
 //        X:条码的起始横坐标。
 //        Y:条码的起始纵坐标。
 //        code_data:条码数据。
-        if (TextUtils.isEmpty(text)){
+        if (TextUtils.isEmpty(text)) {
             return;
         }
 
         String codeType = "128";
-        int narrow = lineWidth+1;
-        int wide = lineWidth*2;
+        int narrow = lineWidth + 1;
+        int wide = lineWidth * 2;
 
 //        128，128M，EAN128 ，39 ，93，UPCA ，MSI ，ITF14
         switch (type) {
@@ -553,39 +542,39 @@ public class KuaiMaiBluetoothPrinter implements IBluetoothPrinterProtocol {
 //              M1: (default), original version
 //              M2: enhanced version
 //        Data:二维码的数据。
-        if (TextUtils.isEmpty(text)){
+        if (TextUtils.isEmpty(text)) {
             return;
         }
 
         String mode = "M1";
-        String ecc_level ="L";
+        String ecc_level = "L";
         switch (level) {
             case QRCODE_CORRECTION_LEVEL_L:
-                ecc_level ="L";
+                ecc_level = "L";
                 break;
             case QRCODE_CORRECTION_LEVEL_M:
-                ecc_level ="M";
+                ecc_level = "M";
                 break;
             case QRCODE_CORRECTION_LEVEL_Q:
-                ecc_level ="Q";
+                ecc_level = "Q";
                 break;
             case QRCODE_CORRECTION_LEVEL_H:
-                ecc_level ="H";
+                ecc_level = "H";
                 break;
             default:
-                ecc_level ="L";
+                ecc_level = "L";
                 break;
         }
 
         byte[] data = new byte[0];
         try {
-            data = String.format("QRCODE "+
-                            "%d,"+
-                            "%d,"+
-                            "%s,"+
-                            "%d,"+
-                            "%s,"+
-                            "%d,"+
+            data = String.format("QRCODE " +
+                            "%d," +
+                            "%d," +
+                            "%s," +
+                            "%d," +
+                            "%s," +
+                            "%d," +
                             "\"%s\"\r\n",
                     startX,
                     startY,
@@ -662,7 +651,7 @@ public class KuaiMaiBluetoothPrinter implements IBluetoothPrinterProtocol {
         byte[] data = new byte[0];
         try {
             data = "FORMFEED\r\n".getBytes(LanguageEncode);
-        }catch (UnsupportedEncodingException ex){
+        } catch (UnsupportedEncodingException ex) {
 
         }
         writeData(data);
@@ -691,26 +680,39 @@ public class KuaiMaiBluetoothPrinter implements IBluetoothPrinterProtocol {
     @Override
     public int getPrinterStatus() {
         int status = -1;
-        if (mBtSocket == null||!mBtSocket.isConnected()){
+        if (mBtSocket == null || !mBtSocket.isConnected()) {
             status = IBluetoothPrinterProtocol.STATUS_DISCONNECT;
             return status;
         }
-        //1.查询状态指令
-        byte[] bArr = new byte[]{27, 33, 63, 13, 10};
-        //2.写入指令
-        if (writeData(bArr)) {
-            //3.读取返回结果
-            byte[] statusBytes = readData(2);
-            //正常0，盖子打开1,无纸4
-            if (statusBytes.length > 0 && statusBytes[0] == 0) {
-                status = IBluetoothPrinterProtocol.STATUS_OK;
-            }else if (statusBytes.length > 0 && statusBytes[0] == 1){
-                status = IBluetoothPrinterProtocol.STATUS_COVER_OPENED;
-            }else if (statusBytes.length > 0 && statusBytes[0] == 4){
-                status = IBluetoothPrinterProtocol.STATUS_NOPAPER;
+        try {
+            //1.查询状态指令
+            byte[] stateCMD = "READSTA \r\n".getBytes(LanguageEncode);
+            //2.写入指令
+            if (writeData(stateCMD)) {
+                //3.读取返回结果
+                String starStatus = new String(readData(2), LanguageEncode);
+                String[] statusArray = starStatus.split(",");
+                if (statusArray!=null&&statusArray.length > 0) {
+                    if (statusArray[1].equals("LIBOPEN")) {
+                        //纸舱盖打开
+                        status = IBluetoothPrinterProtocol.STATUS_COVER_OPENED;
+                    } else if (statusArray[1].equals("NOPAPER")) {
+                        //缺纸
+                        status = IBluetoothPrinterProtocol.STATUS_NOPAPER;
+                    } else if (statusArray[1].equals("PAPEREND")) {
+                        //纸将近
+                        status = IBluetoothPrinterProtocol.STATUS_OK;
+                    } else if (statusArray[1].equals("PAPER")) {
+                        //有纸
+                        status = IBluetoothPrinterProtocol.STATUS_OK;
+                    } else if (statusArray[1].equals("PAPERERR")) {
+                        //卡纸或纸张错误
+                        status = IBluetoothPrinterProtocol.STATUS_NOPAPER;
+                    }
+                }
             }
-        } else {
-            status = IBluetoothPrinterProtocol.STATUS_DISCONNECT;
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         return status;
     }
@@ -728,7 +730,7 @@ public class KuaiMaiBluetoothPrinter implements IBluetoothPrinterProtocol {
         byte[] data = new byte[0];
         try {
             data = "PRINT 1,1\r\n".getBytes(LanguageEncode);
-        }catch (UnsupportedEncodingException ex){
+        } catch (UnsupportedEncodingException ex) {
 
         }
         writeData(data);
