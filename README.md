@@ -8,8 +8,8 @@ Android蓝牙打印机驱动库
 **Gradle**
 
 ```java
-compile 'io.vin.android:bluetoothprinterprotocol:1.0.1'
-compile 'io.vin.android:bluetoothprinter:1.0.9'
+implementation 'io.vin.android:bluetoothprinterprotocol:1.0.2'
+implementation 'io.vin.android:bluetoothprinter:1.0.11'
 ```
 
 
