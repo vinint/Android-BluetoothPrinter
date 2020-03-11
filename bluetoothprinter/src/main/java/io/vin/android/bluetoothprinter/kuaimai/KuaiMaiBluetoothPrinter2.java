@@ -333,14 +333,14 @@ public class KuaiMaiBluetoothPrinter2 implements IBluetoothPrinterProtocol {
                 y_multiplication = 1;
                 break;
             case FONT_SIZE_32:
-                font = "TSS32.BF2";
-                x_multiplication = 1;
-                y_multiplication = 1;
+                font = "TSS16.BF2";
+                x_multiplication = 2;
+                y_multiplication = 2;
                 break;
             case FONT_SIZE_40:
-                font = "TSS32.BF2";
-                x_multiplication = 1;
-                y_multiplication = 1;
+                font = "TSS16.BF2";
+                x_multiplication = 2;
+                y_multiplication = 2;
                 break;
             case FONT_SIZE_48:
                 font = "TSS24.BF2";
@@ -353,9 +353,9 @@ public class KuaiMaiBluetoothPrinter2 implements IBluetoothPrinterProtocol {
                 y_multiplication = 2;
                 break;
             case FONT_SIZE_64:
-                font = "TSS32.BF2";
-                x_multiplication = 2;
-                y_multiplication = 2;
+                font = "TSS16.BF2";
+                x_multiplication = 4;
+                y_multiplication = 4;
                 break;
             case FONT_SIZE_72:
                 font = "TSS24.BF2";
@@ -368,14 +368,14 @@ public class KuaiMaiBluetoothPrinter2 implements IBluetoothPrinterProtocol {
                 y_multiplication = 3;
                 break;
             case FONT_SIZE_96:
-                font = "TSS32.BF2";
-                x_multiplication = 3;
-                y_multiplication = 3;
-                break;
-            case FONT_SIZE_128:
-                font = "TSS32.BF2";
+                font = "TSS24.BF2";
                 x_multiplication = 4;
                 y_multiplication = 4;
+                break;
+            case FONT_SIZE_128:
+                font = "TSS24.BF2";
+                x_multiplication = 5;
+                y_multiplication = 5;
                 break;
             default:
                 font = "TSS16.BF2";
