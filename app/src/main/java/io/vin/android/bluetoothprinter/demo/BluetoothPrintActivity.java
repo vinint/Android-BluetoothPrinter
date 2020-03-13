@@ -291,8 +291,9 @@ public class BluetoothPrintActivity extends FragmentActivity implements AdapterV
         BluetoothPrinterManager.getInstance().registerPrinter("KM-118B", new KuaiMaiBluetoothPrinterFactory("KM-118B"), 1);
         BluetoothPrinterManager.getInstance().registerPrinter("KM-218BT", new KuaiMaiBluetoothPrinterFactory("KM-218BT"), 1);
         BluetoothPrinterManager.getInstance().registerPrinter("KM-202BT", new KuaiMaiBluetoothPrinterFactory("KM-202BT"), 1);
-        BluetoothPrinterManager.getInstance().registerPrinter("KM-202MBT", new KuaiMaiBluetoothPrinterFactory("KM-202MBT"), 1);
         BluetoothPrinterManager.getInstance().registerPrinter("KM-202MP", new KuaiMaiBluetoothPrinterFactory("KM-202MP"), 1);
+        BluetoothPrinterManager.getInstance().registerPrinter("KM-202MBT", new KuaiMaiBluetoothPrinterFactory("KM-202MBT"), 1);
+        BluetoothPrinterManager.getInstance().registerPrinter("KM202MB", new KuaiMaiBluetoothPrinterFactory("KM-202MBT"), 1);
         //容大
         BluetoothPrinterManager.getInstance().registerPrinter("RPP322", new RTBluetoothPrinterFactory("RPP322"), 1);
 

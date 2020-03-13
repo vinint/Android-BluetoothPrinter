@@ -284,7 +284,7 @@ public class KuaiMaiBluetoothPrinter2 implements IBluetoothPrinterProtocol {
     }
 
     private void printTextALL(int startX, int startY, int width, int height, String text, int fontSize, int textStyle, int color, int rotation) {
-        if (mPrinterName.startsWith("KM-202MP")) {
+        if (mPrinterName.startsWith("KM-202MP")||mPrinterName.startsWith("KM202MB")) {
             printTextNormaLA(startX, startY, width, height, text, fontSize, textStyle, color, rotation);
         } else {
             printTextNormaLB(startX, startY, width, height, text, fontSize, textStyle, color, rotation);
