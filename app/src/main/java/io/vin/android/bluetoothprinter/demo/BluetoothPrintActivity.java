@@ -27,6 +27,7 @@ import io.vin.android.bluetoothprinter.hprt.HprtBluetoothPrinterFactory;
 import io.vin.android.bluetoothprinter.jiqiang.JqBluetoothPrinterFactory;
 import io.vin.android.bluetoothprinter.kuaimai.KuaiMaiBluetoothPrinterFactory;
 import io.vin.android.bluetoothprinter.qirui.QRBluetoothPrinterFactory;
+import io.vin.android.bluetoothprinter.snbc.SnbcBluetoothPrinterFactory;
 import io.vin.android.bluetoothprinter.zicox.ZicoxBluetoothPrinterFactory;
 import io.vin.android.bluetoothprinterprotocol.BluetoothPrinterManager;
 import io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol;
@@ -296,6 +297,9 @@ public class BluetoothPrintActivity extends FragmentActivity implements AdapterV
         BluetoothPrinterManager.getInstance().registerPrinter("KM202MB", new KuaiMaiBluetoothPrinterFactory("KM-202MBT"), 1);
         //容大
         BluetoothPrinterManager.getInstance().registerPrinter("RPP322", new RTBluetoothPrinterFactory("RPP322"), 1);
+
+        //新北洋 BTP-P32
+        BluetoothPrinterManager.getInstance().registerPrinter("BTP-P32", new SnbcBluetoothPrinterFactory(""), 1);
 
     }
 

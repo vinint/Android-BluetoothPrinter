@@ -16,8 +16,8 @@ import io.vin.android.bluetoothprinterprotocol.PrintCallback;
  * Mail       vinintg@gmail.com
  */
 public class ZicoxBluetoothPrinter implements IBluetoothPrinterProtocol{
-    ZicoxCentralManager manager;
-    ZicoxPrinter printer;
+    public ZicoxCentralManager manager;
+    public ZicoxPrinter printer;
 
     public ZicoxBluetoothPrinter(String printerModelName){
         printer = new ZicoxPrinter();
