@@ -9,7 +9,7 @@ import io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol;
  * Mail       vinintg@gmail.com
  */
 public class ZicoxBluetoothPrinterFactory implements IBluetoothPrinterFactory{
-    ZicoxBluetoothPrinter printer;
+    IBluetoothPrinterProtocol printer;
     String printerModelName;
 
     public ZicoxBluetoothPrinterFactory(String printerModelName){
@@ -19,7 +19,11 @@ public class ZicoxBluetoothPrinterFactory implements IBluetoothPrinterFactory{
     @Override
     public IBluetoothPrinterProtocol create() {
         if (printer == null){
-            printer = new ZicoxBluetoothPrinter(printerModelName);
+            if (printerModelName.startsWith("YT688")){
+                printer = new zicox_BluetoothPrinter(printerModelName);
+            }else {
+                printer = new ZicoxBluetoothPrinter(printerModelName);
+            }
         }
         return printer;
     }

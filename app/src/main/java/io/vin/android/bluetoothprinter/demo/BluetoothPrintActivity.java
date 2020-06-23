@@ -288,6 +288,7 @@ public class BluetoothPrintActivity extends FragmentActivity implements AdapterV
         //芝柯
         BluetoothPrinterManager.getInstance().registerPrinter("ZTO588", new ZicoxBluetoothPrinterFactory(""), 4);
         BluetoothPrinterManager.getInstance().registerPrinter("XT423", new ZicoxBluetoothPrinterFactory(""), 4);
+        BluetoothPrinterManager.getInstance().registerPrinter("YT688", new ZicoxBluetoothPrinterFactory("YT688"), 4);
         //快麦KM-118B、KM-218BT
         BluetoothPrinterManager.getInstance().registerPrinter("KM-118B", new KuaiMaiBluetoothPrinterFactory("KM-118B"), 1);
         BluetoothPrinterManager.getInstance().registerPrinter("KM-218BT", new KuaiMaiBluetoothPrinterFactory("KM-218BT"), 1);

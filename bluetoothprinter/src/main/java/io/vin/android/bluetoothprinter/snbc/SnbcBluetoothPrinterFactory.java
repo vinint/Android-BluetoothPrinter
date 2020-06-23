@@ -1,6 +1,5 @@
 package io.vin.android.bluetoothprinter.snbc;
 
-import io.vin.android.bluetoothprinter.zicox.ZicoxBluetoothPrinter;
 import io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterFactory;
 import io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol;
 
