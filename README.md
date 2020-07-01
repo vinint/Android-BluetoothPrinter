@@ -9,7 +9,7 @@ Android蓝牙打印机驱动库
 
 ```java
 implementation 'io.vin.android:bluetoothprinterprotocol:1.0.2'
-implementation 'io.vin.android:bluetoothprinter:1.0.16'
+implementation 'io.vin.android:bluetoothprinter:1.0.18'
 ```
 
 
