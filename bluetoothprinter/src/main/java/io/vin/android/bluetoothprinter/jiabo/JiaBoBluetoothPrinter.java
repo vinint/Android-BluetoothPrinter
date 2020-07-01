@@ -29,6 +29,7 @@ public class JiaBoBluetoothPrinter implements IBluetoothPrinterProtocol {
     public BluetoothSocket mBtSocket;
     public InputStream mInStream;
     public OutputStream mOutStream;
+
     /**
      * 蓝牙名称
      */
@@ -120,7 +121,20 @@ public class JiaBoBluetoothPrinter implements IBluetoothPrinterProtocol {
         height = height / 8;
         strBuilder.append(String.format(Locale.getDefault(),
                 "SIZE %d mm,%d mm\r\n", width, height));
-        strBuilder.append("DIRECTION 0\r\n");
+
+        switch (orientation){
+            // 默认
+            case ORIENTATION_DEFAULT:
+                strBuilder.append("DIRECTION 0\r\n");
+                break;
+            // 底部
+            case ORIENTATION_DOWN:
+                strBuilder.append("DIRECTION 1\r\n");
+                break;
+            default:
+                break;
+        }
+
         strBuilder.append("REFERENCE 0,0\r\n");
         strBuilder.append("SET PEEL OFF\r\n");
         strBuilder.append("SET TEAR ON\r\n");
@@ -290,6 +304,17 @@ public class JiaBoBluetoothPrinter implements IBluetoothPrinterProtocol {
         }
     }
 
+    /**
+     * @param startX
+     * @param startY
+     * @param width
+     * @param height
+     * @param text
+     * @param fontSize
+     * @param textStyle
+     * @param color
+     * @param rotation
+     */
     private void printTextNormaL(int startX, int startY, int width,
                                  int height, String text, int fontSize,
                                  int textStyle, int color, int rotation) {
@@ -398,16 +423,31 @@ public class JiaBoBluetoothPrinter implements IBluetoothPrinterProtocol {
 
         byte[] data = new byte[0];
         try {
-            data = String.format(Locale.getDefault(),
-                    "TEXT %d,%d,\"%s\",%d,%d,%d,\"%s\"\r\n",
-                    startX,
-                    startY,
-                    font,
-                    rotation,
-                    x_multiplication,
-                    y_multiplication,
-                    text)
-                    .getBytes(LanguageEncode);
+            if (STYLE_TEXT_BOLD == textStyle) {
+                data = String.format(Locale.getDefault(),
+                        "TEXT %d,%d,\"%s\",%d,%d,%d,B1,\"%s\"\r\n",
+                        startX,
+                        startY,
+                        font,
+                        rotation,
+                        x_multiplication,
+                        y_multiplication,
+                        text)
+                        .getBytes(LanguageEncode);
+            } else {
+                data = String.format(Locale.getDefault(),
+                        "TEXT %d,%d,\"%s\",%d,%d,%d,\"%s\"\r\n",
+                        startX,
+                        startY,
+                        font,
+                        rotation,
+                        x_multiplication,
+                        y_multiplication,
+                        text)
+                        .getBytes(LanguageEncode);
+            }
+
+
         } catch (UnsupportedEncodingException ex) {
             ex.printStackTrace();
         }
