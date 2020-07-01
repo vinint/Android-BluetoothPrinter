@@ -24,10 +24,12 @@ import io.vin.android.bluetoothprinter.RT.RTBluetoothPrinterFactory;
 import io.vin.android.bluetoothprinter.demo.adapter.BluetoothDeviceAdapter;
 import io.vin.android.bluetoothprinter.demo.receiver.BluetoothBroadcastReceiver;
 import io.vin.android.bluetoothprinter.hprt.HprtBluetoothPrinterFactory;
+import io.vin.android.bluetoothprinter.jiabo.JiaBoBluetoothPrinterFactory;
 import io.vin.android.bluetoothprinter.jiqiang.JqBluetoothPrinterFactory;
 import io.vin.android.bluetoothprinter.kuaimai.KuaiMaiBluetoothPrinterFactory;
 import io.vin.android.bluetoothprinter.qirui.QRBluetoothPrinterFactory;
 import io.vin.android.bluetoothprinter.snbc.SnbcBluetoothPrinterFactory;
+import io.vin.android.bluetoothprinter.xprinter.XprinterBluetoothPrinterFactory;
 import io.vin.android.bluetoothprinter.zicox.ZicoxBluetoothPrinterFactory;
 import io.vin.android.bluetoothprinterprotocol.BluetoothPrinterManager;
 import io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol;
@@ -48,6 +50,7 @@ import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.
 import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.FONT_SIZE_84;
 import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.FONT_SIZE_96;
 import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.ORIENTATION_DEFAULT;
+import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.ORIENTATION_DOWN;
 import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.QRCODE_CORRECTION_LEVEL_H;
 import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.QRCODE_UNIT_WIDTH_6;
 import static io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol.STYLE_BARCODE_CODE128;
@@ -298,10 +301,12 @@ public class BluetoothPrintActivity extends FragmentActivity implements AdapterV
         BluetoothPrinterManager.getInstance().registerPrinter("KM202MB", new KuaiMaiBluetoothPrinterFactory("KM-202MBT"), 1);
         //容大
         BluetoothPrinterManager.getInstance().registerPrinter("RPP322", new RTBluetoothPrinterFactory("RPP322"), 1);
-
         //新北洋 BTP-P32
         BluetoothPrinterManager.getInstance().registerPrinter("BTP-P32", new SnbcBluetoothPrinterFactory(""), 1);
-
+        //芯烨
+        BluetoothPrinterManager.getInstance().registerPrinter("XP-P323B", new XprinterBluetoothPrinterFactory("XP-P323B"), 1);
+        //佳博
+        BluetoothPrinterManager.getInstance().registerPrinter("ELP333", new JiaBoBluetoothPrinterFactory("ELP333"), 1);
     }
 
     private void printLab() {
@@ -310,7 +315,7 @@ public class BluetoothPrintActivity extends FragmentActivity implements AdapterV
             return;
         }
 
-        printerProtocol.setPage(100*8,180*8,ORIENTATION_DEFAULT);
+        printerProtocol.setPage(100*8,180*8,ORIENTATION_DOWN);
 
         //draw Line
         printerProtocol.drawLine(3*8,13*8,3*8,3*8,3,IBluetoothPrinterProtocol.STYLE_LINE_FULL);
