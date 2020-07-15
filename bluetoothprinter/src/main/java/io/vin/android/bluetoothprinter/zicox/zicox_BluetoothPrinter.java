@@ -43,11 +43,11 @@ public class zicox_BluetoothPrinter implements IBluetoothPrinterProtocol {
     //private int _gap=0;
     private static _PrinterPageImpl impl = new _PrinterPageImpl();
 
-    private static void zp_printer_status_detect() {
+    private static boolean zp_printer_status_detect() {
         byte data[] = new byte[4];
         data[0] = 0x1d;
         data[1] = (byte) 0x99;
-        SPPWrite(data, 2);
+        return SPPWrite(data, 2);
     }
 
     public static int zp_printer_status_get(int timeout) {
@@ -441,9 +441,18 @@ public class zicox_BluetoothPrinter implements IBluetoothPrinterProtocol {
 
     @Override
     public int getPrinterStatus() {
+        int status = -1;
 
-        zp_printer_status_detect();
-        int status = zp_printer_status_get(8000);
+        if (mySocket == null||!mySocket.isConnected()){
+            status = IBluetoothPrinterProtocol.STATUS_DISCONNECT;
+            return status;
+        }
+
+        if (zp_printer_status_detect()){
+            status = zp_printer_status_get(8000);
+        }else {
+            status = IBluetoothPrinterProtocol.STATUS_DISCONNECT;
+        }
         return status;
     }
 
