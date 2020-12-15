@@ -273,7 +273,7 @@ public class zicox_BluetoothPrinter implements IBluetoothPrinterProtocol {
                          String text, int fontSize, int textStyle, int color, int rotation) {
 
         if (width == 0 || height == 0) {
-            impl.DrawText(startX, startY, text, fontSize, 0, 0, false, false, 0);
+            impl.DrawText(startX, startY, text, fontSize, rotation, 0, false, false, 0);
         } else {
             int f_height = 0;
 
@@ -368,7 +368,7 @@ public class zicox_BluetoothPrinter implements IBluetoothPrinterProtocol {
                     }
                 }
             }
-            impl.DrawText(startX, startY + y, ss, fontSize, 0, 0, false, false, 0);
+            impl.DrawText(startX, startY + y, ss, fontSize, rotation, 0, false, false, 0);
             y = y + f_height;
             ss = "";
             mNum = 0;

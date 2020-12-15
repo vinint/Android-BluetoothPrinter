@@ -6,6 +6,8 @@ import java.io.UnsupportedEncodingException;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 
+import io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol;
+
 
 public class _PrinterPageImpl {
 	private byte[] totalData=new byte[150*1024];
@@ -201,10 +203,10 @@ public class _PrinterPageImpl {
 		}
 
 		String cmd = "T";
-		if(rotate==1)cmd="VT";
-		if(rotate==2)cmd="T180";
-		if(rotate==3)cmd="T270";
-		
+		if(rotate== IBluetoothPrinterProtocol.STYLE_ROTATION_90)cmd="VT";
+		if(rotate== IBluetoothPrinterProtocol.STYLE_ROTATION_180)cmd="T180";
+		if(rotate== IBluetoothPrinterProtocol.STYLE_ROTATION_270)cmd="T270";
+
 		String str = String.format("%s %s %s %d %d %s\r\n",cmd,f_size,0,text_x,text_y,text);
 		byte[] byteStr=null;
 		try {byteStr = str.getBytes("gbk");} catch (UnsupportedEncodingException e) {}
@@ -331,7 +333,7 @@ public class _PrinterPageImpl {
 		
 		
 		String cmd = "BARCODE";
-        if(rotate==1){
+        if(rotate == IBluetoothPrinterProtocol.STYLE_ROTATION_90|| rotate == IBluetoothPrinterProtocol.STYLE_ROTATION_270){
         	cmd="VBARCODE";}
         String str = String.format("%s %s %d 1 %d %d %d %s\r\n",cmd,type, width,height,x,y,text);
   
