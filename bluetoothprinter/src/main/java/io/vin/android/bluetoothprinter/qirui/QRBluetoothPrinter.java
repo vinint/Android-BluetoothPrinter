@@ -71,6 +71,12 @@ public class QRBluetoothPrinter implements IBluetoothPrinterProtocol {
         if (TextUtils.isEmpty(text)){
             return;
         }
+        //配置旋转顺时针
+        if (rotation == STYLE_ROTATION_90){
+            rotation = STYLE_ROTATION_270;
+        }else if (rotation == STYLE_ROTATION_270){
+            rotation = STYLE_ROTATION_90;
+        }
 
         if (width == 0 || height == 0) {
             //不换行

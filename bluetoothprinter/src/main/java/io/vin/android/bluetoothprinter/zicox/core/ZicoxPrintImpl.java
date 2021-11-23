@@ -267,13 +267,13 @@ public class ZicoxPrintImpl {
             case 0:
                 cmd = "T";
                 break;
-            case 90:
+            case 270:
                 cmd = "T90";
                 break;
             case 180 /*180*/:
                 cmd = "T180";
                 break;
-            case 270:
+            case 90:
                 cmd = "T270";
                 break;
         }

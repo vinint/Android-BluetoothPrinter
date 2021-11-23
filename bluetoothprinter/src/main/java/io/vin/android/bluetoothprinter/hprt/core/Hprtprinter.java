@@ -109,13 +109,13 @@ public class Hprtprinter {
                 case 0:
                     command = HPRTPrinterHelper.TEXT;
                     break;
-                case 90:
+                case 270:
                     command = HPRTPrinterHelper.TEXT90;
                     break;
                 case 180:
                     command = HPRTPrinterHelper.TEXT180;
                     break;
-                case 270:
+                case 90:
                     command = HPRTPrinterHelper.TEXT270;
                     break;
             }
