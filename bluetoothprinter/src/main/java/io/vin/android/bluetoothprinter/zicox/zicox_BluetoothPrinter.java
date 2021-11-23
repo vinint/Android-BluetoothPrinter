@@ -245,12 +245,10 @@ public class zicox_BluetoothPrinter implements IBluetoothPrinterProtocol {
 
     @Override
     public void setPage(int width, int height, int orientation) {
-
-
-        if (orientation == 0) _r = 0;
-        if (orientation == 1) _r = 180;
-        if (orientation == 2) _r = 90;
-        if (orientation == 3) _r = 270;
+        if (orientation == ORIENTATION_DEFAULT) _r = 0;
+        if (orientation == ORIENTATION_DOWN) _r = 2;
+        if (orientation == ORIENTATION_LEFT) _r = 1;
+        if (orientation == ORIENTATION_RIGHT) _r = 3;
         impl.Create(width, height);
     }
 
@@ -271,9 +269,24 @@ public class zicox_BluetoothPrinter implements IBluetoothPrinterProtocol {
     @Override
     public void drawText(int startX, int startY, int width, int height,
                          String text, int fontSize, int textStyle, int color, int rotation) {
+        int rotate = 0;
+        switch (rotation){
+            case STYLE_ROTATION_90:
+                rotate = 3;
+                break;
+            case STYLE_ROTATION_180:
+                rotate = 2;
+                break;
+            case STYLE_ROTATION_270:
+                rotate = 1;
+                break;
+            default:
+                rotate =0;
+                break;
+        }
 
         if (width == 0 || height == 0) {
-            impl.DrawText(startX, startY, text, fontSize, rotation, 0, false, false, 0);
+            impl.DrawText(startX, startY, text, fontSize, rotate, 0, false, false, 0);
         } else {
             int f_height = 0;
 
@@ -368,7 +381,7 @@ public class zicox_BluetoothPrinter implements IBluetoothPrinterProtocol {
                     }
                 }
             }
-            impl.DrawText(startX, startY + y, ss, fontSize, rotation, 0, false, false, 0);
+            impl.DrawText(startX, startY + y, ss, fontSize, STYLE_ROTATION_0, 0, false, false, 0);
             y = y + f_height;
             ss = "";
             mNum = 0;
@@ -379,6 +392,10 @@ public class zicox_BluetoothPrinter implements IBluetoothPrinterProtocol {
     public void drawBarCode(int startX, int startY, int height, int lineWidth,
                             String text, int type, int rotation) {
 
+        int rotate = 0;
+        if (rotation == STYLE_ROTATION_90||rotation == STYLE_ROTATION_270){
+            rotate = 1;
+        }
         String type_ = "128";
         if (type == 0)
             type_ = "128";
@@ -398,7 +415,7 @@ public class zicox_BluetoothPrinter implements IBluetoothPrinterProtocol {
             type_ = "UPCE";
         if (type == 8)
             type_ = "I2OF5";
-        impl.DrawBarcode1D(type_, startX, startY, text, lineWidth, height, rotation, 0);
+        impl.DrawBarcode1D(type_, startX, startY, text, lineWidth, height, rotate, 0);
     }
 
     @Override
