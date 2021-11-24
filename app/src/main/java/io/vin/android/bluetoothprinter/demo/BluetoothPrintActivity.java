@@ -347,7 +347,7 @@ public class BluetoothPrintActivity extends FragmentActivity implements AdapterV
 
         printerProtocol.drawText(3*8,72*8,0,0,"96一朝风月万古长空",FONT_SIZE_96,STYLE_TEXT_NO,COLOR_BLACK,STYLE_ROTATION_0);
 
-        printerProtocol.drawText(3*8,84*8,0,0,"128一朝风月万古长空0",FONT_SIZE_128,STYLE_TEXT_NO,COLOR_BLACK,STYLE_ROTATION_0);
+        printerProtocol.drawText(3*8,84*8,0,0,"128一朝风月万古长空0",FONT_SIZE_128,STYLE_TEXT_NO,COLOR_BLACK,STYLE_ROTATION_90);
 
         //draw Barcode
         printerProtocol.drawBarCode(3*8,105*8,10*8,2,"12345678",STYLE_BARCODE_CODE128,STYLE_ROTATION_0);
