@@ -1,10 +1,12 @@
 package io.vin.android.bluetoothprinter.demo;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -97,8 +99,8 @@ public class BluetoothPrintActivity extends FragmentActivity implements AdapterV
         mLvDevices.setAdapter(mAdapter);
         mLvDevices.setOnItemClickListener(this);
         mHandler = new Handler(getMainLooper()) {
-
             @Override
+            @SuppressLint("MissingPermission")
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 //扫描蓝牙设备完成
@@ -130,6 +132,7 @@ public class BluetoothPrintActivity extends FragmentActivity implements AdapterV
     }
 
     @Override
+    @SuppressLint("MissingPermission")
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         cancelDiscoveryBthDevices();
         //连接打印机
@@ -159,7 +162,10 @@ public class BluetoothPrintActivity extends FragmentActivity implements AdapterV
     public void onClick(View v) {
         if(v.getId() == R.id.btn_scan){
             rxPermissions
-                    .request(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION
+                    .request(Manifest.permission.BLUETOOTH_SCAN,
+                            Manifest.permission.BLUETOOTH_CONNECT,
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
                     )
                     .subscribe(granted -> {
                         if (granted) {
@@ -184,6 +190,7 @@ public class BluetoothPrintActivity extends FragmentActivity implements AdapterV
      * Createtime 2018/5/18 下午2:39
      * Modifytime 2018/5/18 下午2:39
      */
+    @SuppressLint("MissingPermission")
     private void turnOnBluetooth() {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         //1.判断设备本身是否具备蓝牙模块
@@ -207,6 +214,7 @@ public class BluetoothPrintActivity extends FragmentActivity implements AdapterV
      * Createtime 2018/5/18 下午3:15
      * Modifytime 2018/5/18 下午3:15
      */
+    @SuppressLint("MissingPermission")
     private void checkBondedDevices() {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
@@ -254,6 +262,7 @@ public class BluetoothPrintActivity extends FragmentActivity implements AdapterV
      * Createtime 2018/5/18 下午3:17
      * Modifytime 2018/5/18 下午3:17
      */
+    @SuppressLint("MissingPermission")
     private Boolean startDiscoveryBthDevices() {
         return mBluetoothAdapter.startDiscovery();
     }
@@ -267,6 +276,7 @@ public class BluetoothPrintActivity extends FragmentActivity implements AdapterV
      * Createtime 2018/5/18 下午3:59
      * Modifytime 2018/5/18 下午3:59
      */
+    @SuppressLint("MissingPermission")
     private Boolean cancelDiscoveryBthDevices() {
         return mBluetoothAdapter.cancelDiscovery();
     }
@@ -276,6 +286,7 @@ public class BluetoothPrintActivity extends FragmentActivity implements AdapterV
         //启瑞
         BluetoothPrinterManager.getInstance().registerPrinter("QR-386", new QRBluetoothPrinterFactory("QR-386"), 3);
         BluetoothPrinterManager.getInstance().registerPrinter("QR380", new QRBluetoothPrinterFactory("QR380"), 3);
+        BluetoothPrinterManager.getInstance().registerPrinter("QR-365", new QRBluetoothPrinterFactory("QR-365",this.getApplication()), 3);
         //汉印
         BluetoothPrinterManager.getInstance().registerPrinter("HM-A300", new HprtBluetoothPrinterFactory(""), 2);
         BluetoothPrinterManager.getInstance().registerPrinter("HM-A330", new HprtBluetoothPrinterFactory(""), 2);
