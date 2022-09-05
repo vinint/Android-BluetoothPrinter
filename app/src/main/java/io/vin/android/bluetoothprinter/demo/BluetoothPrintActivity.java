@@ -302,8 +302,8 @@ public class BluetoothPrintActivity extends FragmentActivity implements AdapterV
         //启瑞
         BluetoothPrinterManager.getInstance().registerPrinter("QR-386", new QRBluetoothPrinterFactory("QR-386"), 3);
         BluetoothPrinterManager.getInstance().registerPrinter("QR380", new QRBluetoothPrinterFactory("QR380"), 3);
-        BluetoothPrinterManager.getInstance().registerPrinter("QR-365", new QRBluetoothPrinterFactory("QR-365",this.getApplication()), 3);
-        BluetoothPrinterManager.getInstance().registerPrinter("QR-488BT", new QRBluetoothPrinterFactory("QR-488BT",this.getApplication()), 3);
+        BluetoothPrinterManager.getInstance().registerPrinter("QR-365", new QRBluetoothPrinterFactory("QR-365",this), 3);
+        BluetoothPrinterManager.getInstance().registerPrinter("QR-488BT", new QRBluetoothPrinterFactory("QR-488BT",this), 3);
         //汉印
         BluetoothPrinterManager.getInstance().registerPrinter("HM-A300", new HprtBluetoothPrinterFactory(""), 2);
         BluetoothPrinterManager.getInstance().registerPrinter("HM-A330", new HprtBluetoothPrinterFactory(""), 2);
