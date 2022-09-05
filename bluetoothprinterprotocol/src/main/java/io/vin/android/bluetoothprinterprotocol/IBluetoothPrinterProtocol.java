@@ -56,6 +56,8 @@ public interface IBluetoothPrinterProtocol {
     int FONT_SIZE_84 = 84;
     int FONT_SIZE_96 = 96;
     int FONT_SIZE_128 = 128;
+    int FONT_SIZE_140 = 140;//汉印打印机定制字体
+    int FONT_SIZE_160 = 160;//汉印打印机定制字体
 
     //Rotation Angle旋转角度
     int STYLE_ROTATION_0 = 0;
