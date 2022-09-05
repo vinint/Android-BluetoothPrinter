@@ -32,16 +32,15 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation files('libs/fat-compatible-external-mamayz-0.1.3-GA.jar')
     implementation files('libs/rt_printer_drive.jar')
+    implementation files('libs/fat-compatible-external-mamayz-0.1.5-GA.jar')
 
     compileOnly 'com.android.support:appcompat-v7:28.0.0-rc01'
     compileOnly project(':bluetoothprinterprotocol')
 }
 
 //upload to internal maven
-//apply from: 'uploadInternalMaven.gradle'
+apply from: 'uploadInternalMaven.gradle'
 
 //upload to Jcenter
-apply from: 'uploadJcenter.gradle'
+//apply from: 'uploadJcenter.gradle'

@@ -3,6 +3,7 @@ package io.vin.android.bluetoothprinter.demo;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -104,7 +106,21 @@ public class BluetoothPrintActivity extends FragmentActivity implements AdapterV
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 //扫描蓝牙设备完成
-                mDevices = mReceiver.getScanBthDevices();
+                mDevices.clear();
+                for (BluetoothDevice device:mReceiver.getScanBthDevices()) {
+                    BluetoothClass bluetoothClass = device.getBluetoothClass();
+                    final int deviceClass = bluetoothClass.getDeviceClass(); //设备类型（音频、手机、电脑、音箱等等）
+                    final int majorDeviceClass = bluetoothClass.getMajorDeviceClass();//具体的设备类型（例如音频设备又分为音箱、耳机、麦克风等等）
+                    if (deviceClass == BluetoothClass.Device.AUDIO_VIDEO_WEARABLE_HEADSET||
+                            deviceClass == BluetoothClass.Device.AUDIO_VIDEO_MICROPHONE||
+                            deviceClass == BluetoothClass.Device.AUDIO_VIDEO_HEADPHONES||
+                            majorDeviceClass == BluetoothClass.Device.Major.COMPUTER||
+                            majorDeviceClass == BluetoothClass.Device.Major.PHONE) {
+                        //音箱、麦克风、耳机、电脑、手机
+                    } else if (!TextUtils.isEmpty(device.getName())){
+                        mDevices.add(device);
+                    }
+                }
                 mDevices.addAll(mBluetoothAdapter.getBondedDevices());
                 mAdapter.setData(mDevices);
                 mAdapter.notifyDataSetChanged();
@@ -287,6 +303,7 @@ public class BluetoothPrintActivity extends FragmentActivity implements AdapterV
         BluetoothPrinterManager.getInstance().registerPrinter("QR-386", new QRBluetoothPrinterFactory("QR-386"), 3);
         BluetoothPrinterManager.getInstance().registerPrinter("QR380", new QRBluetoothPrinterFactory("QR380"), 3);
         BluetoothPrinterManager.getInstance().registerPrinter("QR-365", new QRBluetoothPrinterFactory("QR-365",this.getApplication()), 3);
+        BluetoothPrinterManager.getInstance().registerPrinter("QR-488BT", new QRBluetoothPrinterFactory("QR-488BT",this.getApplication()), 3);
         //汉印
         BluetoothPrinterManager.getInstance().registerPrinter("HM-A300", new HprtBluetoothPrinterFactory(""), 2);
         BluetoothPrinterManager.getInstance().registerPrinter("HM-A330", new HprtBluetoothPrinterFactory(""), 2);

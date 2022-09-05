@@ -145,10 +145,10 @@ public class QRBluetoothPrinterManager {
                 }
             case 90:
                 if (color != 1) {
-                    textCommand = "T90";
+                    textCommand = "T270";
                     break;
                 } else {
-                    textCommand = "TR90";
+                    textCommand = "TR270";
                     break;
                 }
             case 180:
@@ -161,10 +161,10 @@ public class QRBluetoothPrinterManager {
                 }
             case 270:
                 if (color != 1) {
-                    textCommand = "T270";
+                    textCommand = "T90";
                     break;
                 } else {
-                    textCommand = "TR270";
+                    textCommand = "TR90";
                     break;
                 }
             default:

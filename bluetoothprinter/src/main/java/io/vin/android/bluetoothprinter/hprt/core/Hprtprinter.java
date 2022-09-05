@@ -109,14 +109,14 @@ public class Hprtprinter {
                 case 0:
                     command = HPRTPrinterHelper.TEXT;
                     break;
-                case 270:
-                    command = HPRTPrinterHelper.TEXT90;
+                case 90:
+                    command = HPRTPrinterHelper.TEXT270;
                     break;
                 case 180:
                     command = HPRTPrinterHelper.TEXT180;
                     break;
-                case 90:
-                    command = HPRTPrinterHelper.TEXT270;
+                case 270:
+                    command = HPRTPrinterHelper.TEXT90;
                     break;
             }
             if ((style & 1) == 1) {
@@ -177,6 +177,21 @@ public class Hprtprinter {
                     fontString = "4";
                     sizeString = "0";
                     scale = 3;
+                    break;
+                case 128:
+                    fontString = "4";
+                    sizeString = "0";
+                    scale = 4;
+                    break;
+                case 140:
+                    fontString = "28";
+                    sizeString = "0";
+                    scale = 5;
+                    break;
+                case 160:
+                    fontString = "4";
+                    sizeString = "0";
+                    scale = 5;
                     break;
                 default:
                     fontString = "55";

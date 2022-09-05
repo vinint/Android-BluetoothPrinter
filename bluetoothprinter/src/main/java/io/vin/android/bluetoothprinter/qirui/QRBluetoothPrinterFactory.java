@@ -3,6 +3,7 @@ package io.vin.android.bluetoothprinter.qirui;
 import android.app.Application;
 
 import io.vin.android.bluetoothprinter.mamayz.CompatibleMamayz;
+import io.vin.android.bluetoothprinter.mamayz.CompatibleMamayzTspl;
 import io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterFactory;
 import io.vin.android.bluetoothprinterprotocol.IBluetoothPrinterProtocol;
 
@@ -26,7 +27,9 @@ public class QRBluetoothPrinterFactory implements IBluetoothPrinterFactory {
 
     @Override
     public IBluetoothPrinterProtocol create() {
-        if (printerModelName.toUpperCase().contains("QR-365")){
+        if (printerModelName.toUpperCase().contains("QR-488BT")){
+            printer = new CompatibleMamayzTspl(application);
+        } else if (printerModelName.toUpperCase().contains("QR-365")){
             printer = new CompatibleMamayz(application);
         }else {
             printer = new QRBluetoothPrinter(printerModelName);
